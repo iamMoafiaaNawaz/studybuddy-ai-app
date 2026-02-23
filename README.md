@@ -145,12 +145,8 @@ studybuddy-ai/
 ## 📸 Screenshots
 
 | Home Page | Quiz Generator | MCQ Quiz |
-|---|---|---|
-|<img width="1353" height="636" alt="image" src="https://github.com/user-attachments/assets/447bb335-e85a-491f-8a1c-c17c7479c18a" />
- | <img width="591" height="567" alt="image" src="https://github.com/user-attachments/assets/67649d5f-14d6-4e18-b56a-f583f6af4d7c" />
- | <img width="645" height="559" alt="image" src="https://github.com/user-attachments/assets/28cc404d-6dec-4049-8246-70af62eb09d4" />
- |
-
+|-----------|---------------|----------|
+| ![Home Page](https://github.com/user-attachments/assets/447bb335-e85a-491f-8a1c-c17c7479c18a) | ![Quiz Generator](https://github.com/user-attachments/assets/67649d5f-14d6-4e18-b56a-f583f6af4d7c) | ![MCQ Quiz](https://github.com/user-attachments/assets/28cc404d-6dec-4049-8246-70af62eb09d4) |
 ---
 
 ## 🔑 API Configuration
