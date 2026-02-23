@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY;
+const GROQ_API_KEY = "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";
 const GROQ_MODEL   = "llama-3.3-70b-versatile";
 
 async function callGroq(messages, system = "") {
@@ -197,6 +197,12 @@ ANSWER: [model answer]
         input:focus, textarea:focus { outline:2px solid ${C.accent}; outline-offset:-1px; }
         textarea { resize:vertical; }
         @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        @media (max-width:640px) {
+          .nav-links span { display:none; }
+          .hero-h1 { font-size:28px !important; letter-spacing:-0.5px !important; }
+          .hero-btns { flex-direction:column !important; }
+          .page-pad { padding:20px 16px !important; }
+        }
         @keyframes spin   { to{transform:rotate(360deg)} }
         @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.3} }
         .fu { animation:fadeUp 0.3s ease forwards; }
@@ -266,7 +272,7 @@ ANSWER: [model answer]
           </div>
 
           {/* Feature grid */}
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"14px" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))", gap:"14px" }}>
             {[
               { icon:"⊙", label:"Smart Quizzes",     desc:"MCQ, Short Answer, Essay, Fill-in-the-Blanks, and Case Studies — all AI-generated.", color:C.accent,   sc:"setup"     },
               { icon:"≡", label:"Text Summarizer",   desc:"Paste any text and instantly get a concise summary highlighting the key points.",      color:"#7C3AED",  sc:"summarize" },
@@ -327,7 +333,7 @@ ANSWER: [model answer]
 
             {/* Question type */}
             <Label>Question Type</Label>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:"7px", marginBottom:"22px" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(90px,1fr))", gap:"7px", marginBottom:"22px" }}>
               {Q_TYPES.map(q => (
                 <button key={q.id} onClick={() => setCfg(p=>({...p,type:q.id}))} className="btn"
                   style={{ padding:"13px 6px", borderRadius:"9px", fontSize:"10px", fontWeight:700, border:`1.5px solid ${cfg.type===q.id?C.accent:C.border}`, background:cfg.type===q.id?`${C.accent}10`:C.card, color:cfg.type===q.id?C.accent:C.muted, flexDirection:"column", gap:"5px" }}>
@@ -488,7 +494,7 @@ ANSWER: [model answer]
       {tab === "notes" && (
         <div style={{ maxWidth:"860px", margin:"0 auto", padding:"40px 28px" }}>
           <h2 style={{ fontFamily:"'DM Serif Display', serif", fontWeight:400, fontSize:"30px", letterSpacing:"0px", marginBottom:"22px" }}>Study Notes</h2>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1.3fr", gap:"18px" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"18px" }}>
             <div className="fu card" style={{ padding:"24px" }}>
               <div style={{ fontWeight:700, fontSize:"14px", marginBottom:"16px" }}>Add New Note</div>
               <input className="inp" value={nTitle} onChange={e=>setNTitle(e.target.value)} placeholder="Title..."
@@ -533,6 +539,13 @@ ANSWER: [model answer]
           </div>
         </div>
       )}
+
+      {/* FOOTER */}
+      <footer style={{ marginTop:'40px', borderTop:'1px solid #E4E7F0', background:'#fff', padding:'28px', textAlign:'center' }}>
+        <div style={{ fontFamily:"'DM Serif Display', serif", fontSize:'18px', color:'#0F172A', marginBottom:'6px' }}>StudyBuddy <span style={{ color:'#4F46E5' }}>AI</span></div>
+        <div style={{ fontSize:'12px', color:'#94A3B8', marginBottom:'10px' }}>Powered by Groq AI · Built with GAME Framework</div>
+        <div style={{ fontSize:'11px', color:'#CBD5E1' }}>© 2025 StudyBuddy AI · All rights reserved</div>
+      </footer>
     </div>
   );
 }
@@ -614,7 +627,7 @@ function QuizDisplay({ quiz, onBack, onNew }) {
   /* MCQ */
   if (type==="mcq") {
     const qs    = parseMCQ();
-    const score = submitted ? qs.filter(q=>answers[q.id]===q.correct).length : 0;
+    const score = qs.filter(q=>answers[q.id]===q.correct).length;
     const pct   = qs.length ? Math.round(score/qs.length*100) : 0;
     const sc    = pct>=80?C.success:pct>=50?C.warn:C.danger;
     return (
@@ -638,7 +651,7 @@ function QuizDisplay({ quiz, onBack, onNew }) {
                 <span style={{ fontWeight:600, fontSize:"14px", lineHeight:1.65 }}>{q.question}</span>
               </div>
               {/* Exactly 4 options */}
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"7px" }}>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:"7px" }}>
                 {["A","B","C","D"].map((letter,oi)=>{
                   const optText = q.opts[oi];
                   if (!optText) return null;
