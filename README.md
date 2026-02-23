@@ -175,7 +175,8 @@ Demonstrates GAME Framework (Goal, Action, Memory, Environment) in a production-
 This project is open source and available under the [MIT License](LICENSE).
 
 ---
-## 📄 License
+## 📄 Link
+
 https://studybuddy-ai-app-one.vercel.app/
 
 > ⭐ If you found this helpful, give it a star on GitHub!
