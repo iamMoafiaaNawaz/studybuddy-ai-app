@@ -232,7 +232,7 @@ ANSWER: [model answer]
       `}</style>
 
       {/* ── NAVBAR ── */}
-      <nav style={{ background:"#fff", borderBottom:`1px solid ${C.border}`, padding:"0 20px", display:"flex", alignItems:"center", justifyContent:"space-between", height:"52px", position:"sticky", top:0, zIndex:300 }}>
+      <nav className="top-nav" style={{ background:"#fff", borderBottom:`1px solid ${C.border}`, padding:"0 20px", alignItems:"center", justifyContent:"space-between", height:"52px", position:"sticky", top:0, zIndex:300 }}>
         <div onClick={() => setTab("home")} style={{ display:"flex", alignItems:"center", gap:"8px", cursor:"pointer", flexShrink:0 }}>
           <div style={{ width:"30px", height:"30px", borderRadius:"7px", background:`linear-gradient(135deg,${C.accent},${C.accent2})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:"14px" }}>S</div>
           <span style={{ fontFamily:"'DM Serif Display', serif", fontWeight:400, fontSize:"16px", letterSpacing:"0px" }}>StudyBuddy <span style={{ color:C.accent }}>AI</span></span>
