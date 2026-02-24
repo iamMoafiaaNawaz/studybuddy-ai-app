@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const GROQ_API_KEY = "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";
+const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY;
 const GROQ_MODEL   = "llama-3.3-70b-versatile";
 
 async function callGroq(messages, system = "") {
