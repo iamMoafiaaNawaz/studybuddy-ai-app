@@ -198,17 +198,14 @@ ANSWER: [model answer]
         textarea { resize:vertical; }
         @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         @media (max-width:640px) {
-          .desktop-nav { display:none !important; }
           .mobile-nav { display:flex !important; }
+          .brand-text { display:none !important; }
           .hero-h1 { font-size:26px !important; letter-spacing:-0.5px !important; }
-          .hero-sub { font-size:13px !important; }
           .hero-btns { flex-direction:column !important; align-items:stretch !important; }
           .page-pad { padding:16px 14px 80px 14px !important; }
-          .feat-grid { grid-template-columns:1fr !important; }
         }
         @media (min-width:641px) {
           .mobile-nav { display:none !important; }
-          .desktop-nav { display:flex !important; }
         }
         @keyframes spin   { to{transform:rotate(360deg)} }
         @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.3} }
