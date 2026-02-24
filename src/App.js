@@ -51,7 +51,9 @@ const C = {
 export default function App() {
   const [tab, setTab]   = useState("home");
   const [cfg, setCfg]   = useState({ subject:"general", difficulty:"Medium", type:"mcq", n:5, topic:"" });
-  const [quiz, setQuiz] = useState(null);
+  const [quiz, setQuiz] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("sb_quiz") || "null"); } catch { return null; }
+  });
   const [busy, setBusy] = useState(false);
 
   const [sumIn, setSumIn]     = useState("");
@@ -64,17 +66,24 @@ export default function App() {
   const [expOut, setExpOut]     = useState("");
   const [expBusy, setExpBusy]   = useState(false);
 
-  const [msgs, setMsgs]         = useState([]);
+  const [msgs, setMsgs]         = useState(() => {
+    try { return JSON.parse(localStorage.getItem("sb_chat") || "[]"); } catch { return []; }
+  });
   const [chatIn, setChatIn]     = useState("");
   const [chatBusy, setChatBusy] = useState(false);
   const mem    = useRef([]);
   const endRef = useRef(null);
 
-  const [notes, setNotes]   = useState({});
+  const [notes, setNotes]   = useState(() => {
+    try { return JSON.parse(localStorage.getItem("sb_notes") || "{}"); } catch { return {}; }
+  });
   const [nTitle, setNTitle] = useState("");
   const [nBody, setNBody]   = useState("");
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [msgs]);
+  useEffect(() => { localStorage.setItem("sb_notes", JSON.stringify(notes)); }, [notes]);
+  useEffect(() => { localStorage.setItem("sb_chat", JSON.stringify(msgs)); }, [msgs]);
+  useEffect(() => { if(quiz) localStorage.setItem("sb_quiz", JSON.stringify(quiz)); }, [quiz]);
 
   const generateQuiz = async () => {
     setBusy(true);
@@ -505,7 +514,20 @@ ANSWER: [model answer]
       {/* ══════════════════════════════ NOTES ════════════════════════════════ */}
       {tab === "notes" && (
         <div style={{ maxWidth:"860px", margin:"0 auto", padding:"40px 28px" }}>
-          <h2 style={{ fontFamily:"'DM Serif Display', serif", fontWeight:400, fontSize:"30px", letterSpacing:"0px", marginBottom:"22px" }}>Study Notes</h2>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"22px" }}>
+            <h2 style={{ fontFamily:"'DM Serif Display', serif", fontWeight:400, fontSize:"30px", letterSpacing:"0px" }}>Study Notes</h2>
+            <button className="btn" onClick={() => {
+              if(window.confirm("Clear all history? (Notes, Chat, Quiz)")) {
+                localStorage.clear();
+                setNotes({});
+                setMsgs([]);
+                setQuiz(null);
+                mem.current = [];
+              }
+            }} style={{ padding:"7px 14px", borderRadius:"8px", border:"1.5px solid #EF4444", background:"#FEF2F2", color:"#EF4444", fontSize:"12px", fontWeight:600 }}>
+              🗑️ Clear History
+            </button>
+          </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"18px" }}>
             <div className="fu card" style={{ padding:"24px" }}>
               <div style={{ fontWeight:700, fontSize:"14px", marginBottom:"16px" }}>Add New Note</div>
