@@ -200,6 +200,7 @@ ANSWER: [model answer]
         @media (max-width:640px) {
           .top-nav { display:none !important; }
           .mobile-nav { display:flex !important; }
+          .mobile-header { display:flex !important; }
           .hero-h1 { font-size:24px !important; }
           .hero-btns { flex-direction:column !important; align-items:stretch !important; }
           .page-wrap { padding:16px 14px 90px 14px !important; }
@@ -230,6 +231,12 @@ ANSWER: [model answer]
           border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.3px;
         }
       `}</style>
+
+      {/* MOBILE TOP HEADER */}
+      <div className="mobile-header" style={{ display:"none", background:"#fff", borderBottom:"1px solid #E4E7F0", padding:"10px 16px", alignItems:"center", gap:"10px", position:"sticky", top:0, zIndex:300 }}>
+        <div style={{ width:"34px", height:"34px", borderRadius:"10px", background:"linear-gradient(135deg,#4F46E5,#7C3AED)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"18px" }}>🎓</div>
+        <span style={{ fontFamily:"'DM Serif Display', serif", fontSize:"18px", color:"#0F172A" }}>StudyBuddy <span style={{ color:"#4F46E5" }}>AI</span></span>
+      </div>
 
       {/* ── NAVBAR ── */}
       <nav className="top-nav" style={{ background:"#fff", borderBottom:`1px solid ${C.border}`, padding:"0 20px", alignItems:"center", justifyContent:"space-between", height:"52px", position:"sticky", top:0, zIndex:300 }}>
