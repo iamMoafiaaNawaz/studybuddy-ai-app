@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY;
+const GROQ_API_KEY = "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";
 const GROQ_MODEL   = "llama-3.3-70b-versatile";
 
 async function callGroq(messages, system = "") {
@@ -198,10 +198,17 @@ ANSWER: [model answer]
         textarea { resize:vertical; }
         @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         @media (max-width:640px) {
-          .nav-links span { display:none; }
-          .hero-h1 { font-size:28px !important; letter-spacing:-0.5px !important; }
-          .hero-btns { flex-direction:column !important; }
-          .page-pad { padding:20px 16px !important; }
+          .desktop-nav { display:none !important; }
+          .mobile-nav { display:flex !important; }
+          .hero-h1 { font-size:26px !important; letter-spacing:-0.5px !important; }
+          .hero-sub { font-size:13px !important; }
+          .hero-btns { flex-direction:column !important; align-items:stretch !important; }
+          .page-pad { padding:16px 14px 80px 14px !important; }
+          .feat-grid { grid-template-columns:1fr !important; }
+        }
+        @media (min-width:641px) {
+          .mobile-nav { display:none !important; }
+          .desktop-nav { display:flex !important; }
         }
         @keyframes spin   { to{transform:rotate(360deg)} }
         @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.3} }
@@ -540,6 +547,21 @@ ANSWER: [model answer]
         </div>
       )}
 
+
+      {/* MOBILE BOTTOM NAV */}
+      <nav className="mobile-nav" style={{ position:"fixed", bottom:0, left:0, right:0, background:"#fff", borderTop:"1px solid #E4E7F0", zIndex:500, justifyContent:"space-around", alignItems:"center", padding:"6px 0 10px", boxShadow:"0 -4px 20px rgba(0,0,0,0.06)" }}>
+        {NAV.map(n => {
+          const icons = { home:"⌂", setup:"?", summarize:"≡", explain:"💡", chat:"💬", notes:"📓" };
+          const active = tab === n.id;
+          return (
+            <button key={n.id} onClick={() => setTab(n.id)} className="btn"
+              style={{ flexDirection:"column", gap:"2px", padding:"4px 8px", background:"transparent", color:active?C.accent:C.light, fontSize:"10px", fontWeight:active?700:500, minWidth:"48px" }}>
+              <span style={{ fontSize:"18px", lineHeight:1 }}>{icons[n.id]}</span>
+              <span>{n.label}</span>
+            </button>
+          );
+        })}
+      </nav>
       {/* FOOTER */}
       <footer style={{ marginTop:'40px', borderTop:'1px solid #E4E7F0', background:'#fff', padding:'28px', textAlign:'center' }}>
         <div style={{ fontFamily:"'DM Serif Display', serif", fontSize:'18px', color:'#0F172A', marginBottom:'6px' }}>StudyBuddy <span style={{ color:'#4F46E5' }}>AI</span></div>
