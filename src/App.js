@@ -234,8 +234,8 @@ ANSWER: [model answer]
       {/* ── NAVBAR ── */}
       <nav className="top-nav" style={{ background:"#fff", borderBottom:`1px solid ${C.border}`, padding:"0 20px", alignItems:"center", justifyContent:"space-between", height:"52px", position:"sticky", top:0, zIndex:300 }}>
         <div onClick={() => setTab("home")} style={{ display:"flex", alignItems:"center", gap:"8px", cursor:"pointer", flexShrink:0 }}>
-          <div style={{ width:"30px", height:"30px", borderRadius:"7px", background:`linear-gradient(135deg,${C.accent},${C.accent2})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:"14px" }}>S</div>
-          <span style={{ fontFamily:"'DM Serif Display', serif", fontWeight:400, fontSize:"16px", letterSpacing:"0px" }}>StudyBuddy <span style={{ color:C.accent }}>AI</span></span>
+          <div style={{ width:"34px", height:"34px", borderRadius:"10px", background:`linear-gradient(135deg,${C.accent},${C.accent2})`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"18px", boxShadow:`0 4px 12px ${C.accent}40` }}>🎓</div>
+          <span style={{ fontFamily:"'DM Serif Display', serif", fontWeight:400, fontSize:"17px", letterSpacing:"0px" }}>StudyBuddy <span style={{ color:C.accent }}>AI</span></span>
         </div>
         <div style={{ display:"flex", gap:"2px" }}>
           {NAV.map(n => (
@@ -562,7 +562,7 @@ ANSWER: [model answer]
       </nav>
       {/* FOOTER */}
       <footer style={{ marginTop:'40px', borderTop:'1px solid #E4E7F0', background:'#fff', padding:'28px', textAlign:'center' }}>
-        <div style={{ fontFamily:"'DM Serif Display', serif", fontSize:'18px', color:'#0F172A', marginBottom:'6px' }}>StudyBuddy <span style={{ color:'#4F46E5' }}>AI</span></div>
+        <div style={{ fontFamily:"'DM Serif Display', serif", fontSize:'18px', color:'#0F172A', marginBottom:'6px' }}>🎓 StudyBuddy <span style={{ color:'#4F46E5' }}>AI</span></div>
         <div style={{ fontSize:'12px', color:'#94A3B8', marginBottom:'10px' }}>Powered by Groq AI · Built with GAME Framework</div>
         <div style={{ fontSize:'11px', color:'#CBD5E1' }}>© 2025 StudyBuddy AI · All rights reserved</div>
       </footer>
