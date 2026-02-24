@@ -198,14 +198,15 @@ ANSWER: [model answer]
         textarea { resize:vertical; }
         @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         @media (max-width:640px) {
+          .top-nav { display:none !important; }
           .mobile-nav { display:flex !important; }
-          .brand-text { display:none !important; }
-          .hero-h1 { font-size:26px !important; letter-spacing:-0.5px !important; }
+          .hero-h1 { font-size:24px !important; }
           .hero-btns { flex-direction:column !important; align-items:stretch !important; }
-          .page-pad { padding:16px 14px 80px 14px !important; }
+          .page-wrap { padding:16px 14px 90px 14px !important; }
         }
         @media (min-width:641px) {
           .mobile-nav { display:none !important; }
+          .top-nav { display:flex !important; }
         }
         @keyframes spin   { to{transform:rotate(360deg)} }
         @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.3} }
@@ -248,7 +249,7 @@ ANSWER: [model answer]
 
       {/* ══════════════════════════════ HOME ══════════════════════════════════ */}
       {tab === "home" && (
-        <div style={{ maxWidth:"960px", margin:"0 auto", padding:"36px 28px 40px" }}>
+        <div className="page-wrap" style={{ maxWidth:"960px", margin:"0 auto", padding:"36px 28px 40px" }}>
 
           {/* Hero */}
           <div className="fu" style={{ textAlign:"center", marginBottom:"44px" }}>
