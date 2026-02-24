@@ -54,6 +54,9 @@ export default function App() {
   const [quiz, setQuiz] = useState(() => {
     try { return JSON.parse(localStorage.getItem("sb_quiz") || "null"); } catch { return null; }
   });
+  const [quizHistory, setQuizHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("sb_quiz_history") || "[]"); } catch { return []; }
+  });
   const [busy, setBusy] = useState(false);
 
   const [sumIn, setSumIn]     = useState("");
@@ -83,7 +86,17 @@ export default function App() {
   useEffect(() => { endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [msgs]);
   useEffect(() => { localStorage.setItem("sb_notes", JSON.stringify(notes)); }, [notes]);
   useEffect(() => { localStorage.setItem("sb_chat", JSON.stringify(msgs)); }, [msgs]);
-  useEffect(() => { if(quiz) localStorage.setItem("sb_quiz", JSON.stringify(quiz)); }, [quiz]);
+  useEffect(() => { 
+    if(quiz) {
+      localStorage.setItem("sb_quiz", JSON.stringify(quiz));
+      setQuizHistory(prev => {
+        const entry = { ...quiz, savedAt: new Date().toLocaleString() };
+        const updated = [entry, ...prev].slice(0, 10);
+        localStorage.setItem("sb_quiz_history", JSON.stringify(updated));
+        return updated;
+      });
+    }
+  }, [quiz]);
 
   const generateQuiz = async () => {
     setBusy(true);
@@ -189,6 +202,7 @@ ANSWER: [model answer]
     { id:"explain",   label:"Explain"   },
     { id:"chat",      label:"Chat"      },
     { id:"notes",     label:"Notes"     },
+    { id:"history",   label:"History"   },
   ];
 
   const Spinner = () => (
@@ -240,6 +254,95 @@ ANSWER: [model answer]
           border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.3px;
         }
       `}</style>
+
+      {/* ══════════════════════════════ HISTORY ══════════════════════════════ */}
+      {tab === "history" && (
+        <div className="page-wrap" style={{ maxWidth:"860px", margin:"0 auto", padding:"40px 28px" }}>
+          <h2 style={{ fontFamily:"'DM Serif Display', serif", fontWeight:400, fontSize:"30px", marginBottom:"6px" }}>Activity History</h2>
+          <p style={{ color:"#64748B", fontSize:"14px", marginBottom:"28px" }}>Your recent quizzes, chats and notes — saved locally on this device</p>
+
+          {/* Chat History */}
+          <div className="card fu" style={{ padding:"24px", marginBottom:"16px" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"16px" }}>
+              <div style={{ fontWeight:700, fontSize:"15px" }}>💬 Chat History</div>
+              <div style={{ fontSize:"12px", color:"#94A3B8" }}>{msgs.length} messages</div>
+            </div>
+            {msgs.length === 0 ? (
+              <div style={{ textAlign:"center", padding:"24px", color:"#94A3B8", fontSize:"13px" }}>No chat history yet</div>
+            ) : (
+              <div style={{ maxHeight:"300px", overflowY:"auto", display:"flex", flexDirection:"column", gap:"8px" }}>
+                {msgs.map((m,i) => (
+                  <div key={i} style={{ padding:"10px 14px", borderRadius:"10px", fontSize:"13px", lineHeight:1.6,
+                    background: m.role==="user" ? "#EEF2FF" : "#F8FAFC",
+                    borderLeft: m.role==="user" ? "3px solid #4F46E5" : "3px solid #E4E7F0",
+                    color: "#0F172A" }}>
+                    <span style={{ fontWeight:700, fontSize:"11px", color: m.role==="user" ? "#4F46E5" : "#94A3B8", display:"block", marginBottom:"3px" }}>
+                      {m.role === "user" ? "You" : "AI Tutor"}
+                    </span>
+                    {m.text}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Quiz History */}
+          <div className="card fu" style={{ padding:"24px", marginBottom:"16px" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"16px" }}>
+              <div style={{ fontWeight:700, fontSize:"15px" }}>🧠 Quiz History</div>
+              <div style={{ fontSize:"12px", color:"#94A3B8" }}>{quizHistory.length} quizzes</div>
+            </div>
+            {quizHistory.length === 0 ? (
+              <div style={{ textAlign:"center", padding:"24px", color:"#94A3B8", fontSize:"13px" }}>No quiz history yet</div>
+            ) : (
+              <div style={{ display:"flex", flexDirection:"column", gap:"10px" }}>
+                {quizHistory.map((q,i) => (
+                  <div key={i} style={{ padding:"14px 16px", borderRadius:"10px", background:"#F8FAFC", border:"1px solid #E4E7F0", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                    <div>
+                      <div style={{ fontWeight:700, fontSize:"13px", marginBottom:"3px" }}>{q.topic || "Quiz"}</div>
+                      <div style={{ fontSize:"11px", color:"#94A3B8" }}>{q.type?.toUpperCase()} · {q.questions?.length || 0} questions · {q.savedAt}</div>
+                    </div>
+                    <button className="btn" onClick={() => { setQuiz(q); setTab("quiz"); }}
+                      style={{ padding:"6px 12px", borderRadius:"7px", background:"#EEF2FF", color:"#4F46E5", fontSize:"12px", fontWeight:600 }}>
+                      View
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Notes Summary */}
+          <div className="card fu" style={{ padding:"24px", marginBottom:"16px" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"16px" }}>
+              <div style={{ fontWeight:700, fontSize:"15px" }}>📓 Saved Notes</div>
+              <div style={{ fontSize:"12px", color:"#94A3B8" }}>{Object.keys(notes).length} notes</div>
+            </div>
+            {Object.keys(notes).length === 0 ? (
+              <div style={{ textAlign:"center", padding:"24px", color:"#94A3B8", fontSize:"13px" }}>No notes saved yet</div>
+            ) : (
+              <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
+                {Object.entries(notes).map(([title,{body,date}],i) => (
+                  <div key={i} style={{ padding:"12px 16px", borderRadius:"10px", background:"#F8FAFC", border:"1px solid #E4E7F0" }}>
+                    <div style={{ fontWeight:700, fontSize:"13px", marginBottom:"2px" }}>{title}</div>
+                    <div style={{ fontSize:"12px", color:"#64748B", marginBottom:"4px" }}>{date}</div>
+                    <div style={{ fontSize:"12px", color:"#94A3B8", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{body}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Clear All */}
+          <button className="btn" onClick={() => {
+            if(window.confirm("Clear all history?")) {
+              localStorage.clear(); setNotes({}); setMsgs([]); setQuiz(null); setQuizHistory([]); mem.current = [];
+            }
+          }} style={{ width:"100%", padding:"12px", borderRadius:"10px", border:"1.5px solid #EF4444", background:"#FEF2F2", color:"#EF4444", fontSize:"13px", fontWeight:600 }}>
+            🗑️ Clear All History
+          </button>
+        </div>
+      )}
 
       {/* MOBILE TOP HEADER */}
       <div className="mobile-header" style={{ display:"none", background:"#fff", borderBottom:"1px solid #E4E7F0", padding:"10px 16px", alignItems:"center", gap:"10px", position:"sticky", top:0, zIndex:300 }}>
@@ -578,7 +681,7 @@ ANSWER: [model answer]
       {/* MOBILE BOTTOM NAV */}
       <nav className="mobile-nav" style={{ position:"fixed", bottom:0, left:0, right:0, background:"#fff", borderTop:"1px solid #E4E7F0", zIndex:500, justifyContent:"space-around", alignItems:"center", padding:"6px 0 10px", boxShadow:"0 -4px 20px rgba(0,0,0,0.06)" }}>
         {NAV.map(n => {
-          const icons = { home:"⌂", setup:"?", summarize:"≡", explain:"💡", chat:"💬", notes:"📓" };
+          const icons = { home:"⌂", setup:"?", summarize:"≡", explain:"💡", chat:"💬", notes:"📓", history:"🕐" };
           const active = tab === n.id;
           return (
             <button key={n.id} onClick={() => setTab(n.id)} className="btn"
